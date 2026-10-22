@@ -1,0 +1,6 @@
+cache/
+logs/
+cache_download.log
+__pycache__/
+*.pyc
+.claude/

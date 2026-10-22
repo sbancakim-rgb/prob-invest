@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>확률투자</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#14532D" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0D1217" media="(prefers-color-scheme: dark)">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="확률투자">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" href="icons/favicon-32.png" sizes="32x32">
+<link rel="stylesheet" href="app.css?v=4">
+<script>
+  if ("serviceWorker" in navigator) {
+    addEventListener("load", function () {
+      navigator.serviceWorker.register("sw.js").catch(function () {});
+    });
+  }
+</script>
+</head>
+<body>
+<header class="top">
+  <div class="top-row">
+    <h1>확률투자</h1>
+    <span class="asof" id="asof">불러오는 중…</span>
+  </div>
+  <div class="seg" id="hseg" role="tablist" aria-label="보유 기간">
+    <button data-h="1" role="tab">다음날</button>
+    <button data-h="5" role="tab">1주(5일)</button>
+    <button data-h="20" role="tab">1달(20일)</button>
+  </div>
+</header>
+
+<main id="main">
+  <section id="v-picks" class="view"></section>
+  <section id="v-rules" class="view" hidden></section>
+  <section id="v-lab" class="view" hidden></section>
+  <section id="v-help" class="view" hidden></section>
+</main>
+
+<div class="sheet-bg" id="sheetBg" hidden></div>
+<div class="sheet" id="sheet" hidden role="dialog" aria-modal="true">
+  <div class="sheet-head"><span class="grab"></span><button class="x" id="sheetClose" aria-label="닫기">✕</button></div>
+  <div class="sheet-body" id="sheetBody"></div>
+</div>
+
+<nav class="tabs" id="tabs">
+  <button data-v="picks" class="on"><span class="ti">★</span>오늘의 추천</button>
+  <button data-v="rules"><span class="ti">≡</span>규칙 순위</button>
+  <button data-v="lab"><span class="ti">⚗</span>조건 실험실</button>
+  <button data-v="help"><span class="ti">?</span>설명</button>
+</nav>
+
+<script src="app.js?v=4"></script>
+</body>
+</html>
