@@ -137,12 +137,15 @@ def load_prices(uni: pd.DataFrame, update: bool = True, workers: int = 4, log=pr
         if pd.notna(restart_min):
             refreshed = set(new.loc[~new["code"].isin(full_codes), "code"])
             # 겹치는 구간에서 가격이 달라졌으면(액면분할 등) 그 종목은 전체를 다시 받는다
-            chk = old[old["code"].isin(refreshed) & (old["date"] >= restart_min)].merge(
+            # (기존 데이터의 마지막 날은 장중 미완성 값일 수 있어 비교에서 뺀다)
+            chk = old[old["code"].isin(refreshed) & (old["date"] >= restart_min)
+                      & (old["date"] < old["date"].max())].merge(
                 new[["date", "code", "Close"]], on=["date", "code"], suffixes=("", "_n"))
             changed = set(chk.loc[(chk["Close"] - chk["Close_n"]).abs() > 0.5, "code"])
             if changed:
                 log(f"  수정주가 변경 {len(changed)}종목 전체 재수신")
-                refetch = [df for df in (_fetch(c, START) for c in changed) if df is not None]
+                with ThreadPoolExecutor(max_workers=workers) as ex:
+                    refetch = [df for df in ex.map(lambda c: _fetch(c, START), changed) if df is not None]
                 if refetch:
                     rf = pd.concat(refetch).reset_index()
                     new = pd.concat([new[~new["code"].isin(changed)], rf])
@@ -158,6 +161,17 @@ def load_prices(uni: pd.DataFrame, update: bool = True, workers: int = 4, log=pr
     CACHE.mkdir(exist_ok=True)
     new.to_parquet(path)
     return new
+
+
+def load_quotes() -> pd.DataFrame | None:
+    """거래소 현재 종목 목록: 상장주식수·거래량·거래대금(조회 시점 기준). 실패하면 None."""
+    try:
+        with ThreadPoolExecutor(max_workers=1) as ex:
+            df = ex.submit(fdr.StockListing, "KRX").result(timeout=60)
+        df = df[["Code", "Close", "Volume", "Amount", "Stocks"]].rename(columns={"Code": "code"})
+        return df.set_index("code")
+    except Exception:
+        return None
 
 
 def load_index(update: bool = True) -> pd.DataFrame:

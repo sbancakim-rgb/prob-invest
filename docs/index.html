@@ -13,7 +13,7 @@
 <meta name="apple-mobile-web-app-title" content="확률투자">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" href="icons/favicon-32.png" sizes="32x32">
-<link rel="stylesheet" href="app.css?v=4">
+<link rel="stylesheet" href="app.css?v=6">
 <script>
   if ("serviceWorker" in navigator) {
     addEventListener("load", function () {
@@ -37,9 +37,10 @@
 
 <main id="main">
   <section id="v-picks" class="view"></section>
-  <section id="v-rules" class="view" hidden></section>
+  <section id="v-track" class="view" hidden></section>
+  <section id="v-watch" class="view" hidden></section>
   <section id="v-lab" class="view" hidden></section>
-  <section id="v-help" class="view" hidden></section>
+  <section id="v-more" class="view" hidden></section>
 </main>
 
 <div class="sheet-bg" id="sheetBg" hidden></div>
@@ -49,12 +50,13 @@
 </div>
 
 <nav class="tabs" id="tabs">
-  <button data-v="picks" class="on"><span class="ti">★</span>오늘의 추천</button>
-  <button data-v="rules"><span class="ti">≡</span>규칙 순위</button>
-  <button data-v="lab"><span class="ti">⚗</span>조건 실험실</button>
-  <button data-v="help"><span class="ti">?</span>설명</button>
+  <button data-v="picks" class="on"><span class="ti">◎</span>오늘의 추천</button>
+  <button data-v="track"><span class="ti">↗</span>추천 성과</button>
+  <button data-v="watch"><span class="ti">★</span>관심종목</button>
+  <button data-v="lab"><span class="ti">⚗</span>실험실</button>
+  <button data-v="more"><span class="ti">≡</span>더보기</button>
 </nav>
 
-<script src="app.js?v=4"></script>
+<script src="app.js?v=6"></script>
 </body>
 </html>
